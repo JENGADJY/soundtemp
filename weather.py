@@ -1,10 +1,28 @@
+from dotenv import load_dotenv
+import os
 import requests
 
-API_KEY = "144860df72732f4b94bd117fa019ec18"
+
+load_dotenv()
+API_KEY = os.getenv("WEATHER_API")
 ville = "Paris"
 
-url = f"http://api.openweathermap.org/data/2.5/weather?q={ville}&appid={API_KEY}&units=metric&lang=fr"
+if not API_KEY:
+    print(" Clé API introuvable dans le fichier .env")
+    exit()
+
+
+url = f"http://api.weatherstack.com/current?access_key={API_KEY}&query={ville}"
+
 response = requests.get(url)
 
-print(response.status_code)
-print(response.text)
+if response.status_code == 200:
+    data = response.json()
+    if "current" in data:
+        temperature = data["current"]["temperature"]
+        description = data["current"]["weather_descriptions"][0]
+        print(f"Meteo à {ville} : {temperature}°C, {description}")
+    else:
+        print(" Erreur dans la réponse : ", data.get("error", {}))
+else:
+    print(f" Erreur HTTP : {response.status_code}")
