@@ -4,8 +4,8 @@ import os
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
-from enter import diction_genres
-from weather import weather
+from script.Spotify_data import diction_genres
+from script.weather_data import weather
 
 load_dotenv()
 
