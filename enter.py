@@ -56,48 +56,42 @@ def get_users_top_items(access_token):
     response.raise_for_status()
     return response.json()
 
-if __name__ == "__main__":
-    config = dotenv_values("spotify_tokens.env")
-    refresh_token = config.get("REFRESH_TOKEN")
 
-    if refresh_token:
-        print(" Utilisation du refresh_token existant")
-        access_token = refresh_access_token(refresh_token, client_id, client_secret)
-    elif code:
-        print(" Première connexion : récupération d'un nouveau refresh_token...")
-        user_token_data = get_user_token(code, client_id, client_secret, redirect_uri)
-        access_token = user_token_data["access_token"]
-        refresh_token = user_token_data["refresh_token"]
+config = dotenv_values("spotify_tokens.env")
+refresh_token = config.get("REFRESH_TOKEN")
+
+if refresh_token:
+    print(" Utilisation du refresh_token existant")
+    access_token = refresh_access_token(refresh_token, client_id, client_secret)
+elif code:
+    print(" Première connexion : récupération d'un nouveau refresh_token...")
+    user_token_data = get_user_token(code, client_id, client_secret, redirect_uri)
+    access_token = user_token_data["access_token"]
+    refresh_token = user_token_data["refresh_token"]
 
         
-        with open("spotify_tokens.env", "w") as f:
-            f.write(f"REFRESH_TOKEN={refresh_token}\n")
-    else:
-        raise ValueError(" Aucun code ni refresh_token disponible.")
+    with open("spotify_tokens.env", "w") as f:
+        f.write(f"REFRESH_TOKEN={refresh_token}\n")
+else:
+    raise ValueError(" Aucun code ni refresh_token disponible.")
 
-    print(" Récupération des artistes préférés...")
-    top = get_users_top_items(access_token)
-    genres = []
+print(" Récupération des artistes préférés...")
+top = get_users_top_items(access_token)
+genres = []
 
-    for idx, artist in enumerate(top["items"], 1):
-        if artist['genres']:
-            genres.extend(artist['genres'])
-        print(f"{idx}. {artist['name']} (Genres: {', '.join(artist['genres'])})")
+for idx, artist in enumerate(top["items"], 1):
+    if artist['genres']:
+        genres.extend(artist['genres'])
+    print(f"{idx}. {artist['name']} (Genres: {', '.join(artist['genres'])})")
 
-    diction_genres = Counter(genres)
+diction_genres_raw = Counter(genres)
+total_genres = sum(diction_genres_raw.values())
 
-    # Affichage du résultat
-    print("\nGenres cumuls :")
-    for genre, count in diction_genres.items():
-        print(f"{genre}: {count*100/20}")  
-    
-    print(diction_genres)
 
-    def get_response(self, json_str: str) -> str:
-        """Envoie une requête à l'API Mistral et retourne la réponse."""
-        response = self.client.agents.complete(
-            agent_id="ag:753184c9:20250311:untitled-agent:e063ae99",
-            messages=[{"role": "user", "content": json_str}]
-        )
-        return response.choices[0].message.content.strip()
+diction_genres = {
+    genre: round((count / total_genres) * 100, 2)
+    for genre, count in diction_genres_raw.items()
+}
+    #print(diction_genres)
+
     

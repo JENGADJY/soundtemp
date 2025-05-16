@@ -15,7 +15,7 @@ if not API_KEY:
 url = f"http://api.weatherstack.com/current?access_key={API_KEY}&query={ville}"
 
 response = requests.get(url)
-
+weather =[]
 if response.status_code == 200:
     data = response.json()
     if "current" in data:
@@ -26,3 +26,8 @@ if response.status_code == 200:
         print(" Erreur dans la réponse : ", data.get("error", {}))
 else:
     print(f" Erreur HTTP : {response.status_code}")
+
+weather.append(ville)
+weather.append(temperature)
+weather.append(description)
+print(weather)

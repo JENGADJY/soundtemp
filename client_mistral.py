@@ -1,20 +1,22 @@
 from mistralai import Mistral
 from dotenv import load_dotenv 
 import os
-
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 
 from enter import diction_genres
+from weather import weather
 
 load_dotenv()
 
 MistralKey= os.getenv("MISTRAL_KEY")
 MistralAgent=os.getenv("MISTRAL_AGENT")
-
+print(diction_genres)
 client=Mistral(api_key=MistralKey)
 
-content ="voici les genres en pourcentages:"+ diction_genres ,
+content =f"voici les genres en pourcentages: {diction_genres} , {weather}"
 response =client.agents.complete(
     agent_id=MistralAgent,
-    message=[{"role":"user","content":content}]
+    messages=[{"role":"user","content":content}]
 )
-print(response_text=response.choices[0].messages.content.strip())
+print(print(response.choices[0].message.content.strip()))
