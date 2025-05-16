@@ -1,12 +1,8 @@
-from dotenv import load_dotenv
+from dotenv import load_dotenv, dotenv_values
 import requests
 import base64
 import os
-import urllib.parse
-import webbrowser
-from http.server import HTTPServer, BaseHTTPRequestHandler
-import threading
-
+from collections import Counter
 
 load_dotenv()
 client_id = os.getenv("SPOTIFY_CLIENT")
@@ -15,12 +11,7 @@ redirect_uri = "https://94dec92d-c760-4a77-a82a-26aa6a6123eb-00-4vps2voh1hnd.pic
 scopes = "user-top-read"
 
 
-
-# changer a chaque demarrage
-code = "AQD63gNNM8MqpbhA_fyk_2ETNL4IO9WlOitdLe5X8-GRTG1PKDUJ1VUwcZ7S11YcQZjczaypu9P_hw69MCyzVq7jquCUgIiBZ-0V2vyjRtQKYLkDKKVx6SKdwL60nOEXwgE6TEU1EhGdIkSj1UO-F5DkubM3kaWp7XhR-pcOPk-LR1m7sSfbRt8xdMZcNAatgT3PRNqQ1bLiMSump-6-emQSV2MHZeGhoL0F2awpq6veD4Oqp6OodXQzVxMCe-kmgIzPzowkYy2O9A"
-
-
-
+code = "AQAGy15qSNM7QZNSEMjt3gz-C-C_8WUPnnSPQ1X2UNSb_B_U339jx92wMp9VpNBfNqICQiCJaMELIcuSsPwH9l_kHWiu4WJCikVwdTjLbmEfIG2rcFiDfFVi4t8tsiBQWNKSDYjSW5Ult14ed-vIaosgK_bK1y13GawlYWD2R5Zv3pTmx5ueESbh1NwxkUFHw5gZFA7Gm7Z5kCVm02ajnnbIXAOpngLYMkCrqmGJv7-kYXwK_98RbzxOxh9YBtIeD9uWY0igfZjR9g"
 
 def get_user_token(code, client_id, client_secret, redirect_uri):
     url = "https://accounts.spotify.com/api/token"
@@ -36,6 +27,19 @@ def get_user_token(code, client_id, client_secret, redirect_uri):
     response.raise_for_status()
     return response.json()
 
+def refresh_access_token(refresh_token, client_id, client_secret):
+    url = "https://accounts.spotify.com/api/token"
+    headers = {
+        "Authorization": "Basic " + base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
+    }
+    data = {
+        "grant_type": "refresh_token",
+        "refresh_token": refresh_token
+    }
+
+    response = requests.post(url, headers=headers, data=data)
+    response.raise_for_status()
+    return response.json()["access_token"]
 
 def get_users_top_items(access_token):
     url = "https://api.spotify.com/v1/me/top/artists"
@@ -44,7 +48,7 @@ def get_users_top_items(access_token):
     }
     params = {
         "time_range": "medium_term",
-        "limit": 10,
+        "limit": 20,
         "offset": 0
     }
 
@@ -52,24 +56,48 @@ def get_users_top_items(access_token):
     response.raise_for_status()
     return response.json()
 
-
 if __name__ == "__main__":
-    if code != None:
+    config = dotenv_values("spotify_tokens.env")
+    refresh_token = config.get("REFRESH_TOKEN")
 
-
-        print("Code reçu, récupération du token utilisateur...")
+    if refresh_token:
+        print(" Utilisation du refresh_token existant")
+        access_token = refresh_access_token(refresh_token, client_id, client_secret)
+    elif code:
+        print(" Première connexion : récupération d'un nouveau refresh_token...")
         user_token_data = get_user_token(code, client_id, client_secret, redirect_uri)
         access_token = user_token_data["access_token"]
+        refresh_token = user_token_data["refresh_token"]
 
-        print(" Récupération des artistes préférés...")
-        top = get_users_top_items(access_token)
-        k=[]
-
-        for idx, artist in enumerate(top["items"], 1):
-            if artist['genres'] !=[]:
-                k.append(artist['genres'])
-            print(f"{idx}. {artist['name']} (Genres: {', '.join(artist['genres'])})")
-            print(k)
         
-        code = None
+        with open("spotify_tokens.env", "w") as f:
+            f.write(f"REFRESH_TOKEN={refresh_token}\n")
+    else:
+        raise ValueError(" Aucun code ni refresh_token disponible.")
 
+    print(" Récupération des artistes préférés...")
+    top = get_users_top_items(access_token)
+    genres = []
+
+    for idx, artist in enumerate(top["items"], 1):
+        if artist['genres']:
+            genres.extend(artist['genres'])
+        print(f"{idx}. {artist['name']} (Genres: {', '.join(artist['genres'])})")
+
+    diction_genres = Counter(genres)
+
+    # Affichage du résultat
+    print("\nGenres cumuls :")
+    for genre, count in diction_genres.items():
+        print(f"{genre}: {count*100/20}")  
+    
+    print(diction_genres)
+
+    def get_response(self, json_str: str) -> str:
+        """Envoie une requête à l'API Mistral et retourne la réponse."""
+        response = self.client.agents.complete(
+            agent_id="ag:753184c9:20250311:untitled-agent:e063ae99",
+            messages=[{"role": "user", "content": json_str}]
+        )
+        return response.choices[0].message.content.strip()
+    

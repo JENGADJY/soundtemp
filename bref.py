@@ -1,15 +1,14 @@
 from dotenv import load_dotenv
-
 import os
 import urllib.parse
 import webbrowser
-from http.server import HTTPServer, BaseHTTPRequestHandler
-import threading
+import time
+import requests
+from bs4 import BeautifulSoup
 
 load_dotenv()
 client_id = os.getenv("SPOTIFY_CLIENT")
-client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
-redirect_uri = "https://94dec92d-c760-4a77-a82a-26aa6a6123eb-00-4vps2voh1hnd.picard.replit.dev/callback"
+redirect_uri = "https://94dec92d-c760-4a77-a82a-26aa6a6123eb-00-4vps2voh1hnd.picard.replit.dev/callback" 
 scopes = "user-top-read"
 
 params = {
@@ -19,32 +18,23 @@ params = {
     "scope": scopes
 }
 auth_url = f"https://accounts.spotify.com/authorize?{urllib.parse.urlencode(params)}"
-print("Connecte-toi ici :", auth_url)
 
+print(" Connecte-toi ici :", auth_url)
+webbrowser.open(auth_url)
 
-class SpotifyAuthHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        global code
-        query = urllib.parse.urlparse(self.path).query
-        params = urllib.parse.parse_qs(query)
-        if "code" in params:
-            code = params["code"][0]
-            self.send_response(200)
-            self.send_header("Content-type", "text/html")
-            self.end_headers()
-            self.wfile.write(b"<h1>Connexion russie ! Vous pouvez fermer cette page.</h1>")
-        else:
-            self.send_response(400)
-            self.end_headers()
+# On attnd un peu que l'utilisateur accepte
+print(" Attente de la redirection (ouvre le lien dans le navigateur)...")
+time.sleep(10)
 
-def run_server():
-    httpd = HTTPServer(('localhost', 8888), SpotifyAuthHandler)
-    httpd.handle_request()  
-
-if __name__ == "__main__":
-    print(" Ouverture de la page de connexion Spotify...")
-    webbrowser.open(auth_url)
-
-
-    server_thread = threading.Thread(target=run_server)
-    server_thread.start()
+# Récupération du code dans la page HTML Replit
+try:
+    response = requests.get(redirect_uri)
+    soup = BeautifulSoup(response.text, "html.parser")
+    code_tag = soup.find("code")
+    if code_tag:
+        code = code_tag.text.strip()
+        print(" Code récupéré automatiquement :", code)
+    else:
+        print(" Aucune balise <code> trouvée dans la page HTML.")
+except Exception as e:
+    print(" Erreur lors de la requête :", e)
