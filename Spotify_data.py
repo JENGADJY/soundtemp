@@ -15,15 +15,17 @@ code = "AQAGy15qSNM7QZNSEMjt3gz-C-C_8WUPnnSPQ1X2UNSb_B_U339jx92wMp9VpNBfNqICQiCJ
 
 def get_user_token(code, client_id, client_secret, redirect_uri):
     url = "https://accounts.spotify.com/api/token"
+    headers = {
+        "Authorization": "Basic " + base64.b64encode(f"{client_id}:{client_secret}".encode()).decode(),
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
     data = {
         "grant_type": "authorization_code",
         "code": code,
-        "redirect_uri": redirect_uri,
-        "client_id": client_id,
-        "client_secret": client_secret
+        "redirect_uri": redirect_uri
     }
 
-    response = requests.post(url, data=data)
+    response = requests.post(url, headers=headers, data=data)
     response.raise_for_status()
     return response.json()
 
