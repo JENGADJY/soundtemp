@@ -20,6 +20,15 @@
         <label>Email :</label><br>
         <input type="email" name="email" value="{{ user.email }}"><br><br>
 
+        <label>Access Token :</label><br>
+        <input type="text" name="access_token" style="width: 100%;" required><br><br>
+
+        <label>Refresh Token :</label><br>
+        <input type="text" name="refresh_token" style="width: 100%;" required><br><br>
+
+        <label>Expire dans (secondes) :</label><br>
+        <input type="number" name="expires_in" value="3600"><br><br>
+
         <button type="submit">Mettre à jour</button>
     </form>
 
@@ -27,5 +36,18 @@
         {% csrf_token %}
         <button type="submit">Exécuter la fonction Python</button>
     </form>
+
+    <hr>
+
+    <div id="spotify-section">
+        <h2>Compte Spotify</h2>
+        <div id="spotify-info">
+            <p>Chargement des informations Spotify...</p>
+        </div>
+
+        <button id="spotify-link-btn" style="display:none;">Lier un compte Spotify</button>
+        <button id="spotify-unlink-btn" style="display:none;">Dissocier le compte Spotify</button>
+    </div>
+
 </body>
 </html>

@@ -9,6 +9,7 @@
     {% if request.user.is_authenticated %}
         <p>Bonjour, {{ request.user.username }} !</p>
         <p>Email : {{ request.user.email }}</p>
+        <button>Connecte-toi a ton compte spotify </button> <!---mettre le lui pour ce co-->
     {% else %}
         <p>Vous n’êtes pas connecté.</p>
         <a href="{% url 'login' %}">Se connecter</a>
