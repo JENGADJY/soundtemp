@@ -11,9 +11,8 @@ load_dotenv()
 
 MistralKey= os.getenv("MISTRAL_KEY")
 MistralAgent=os.getenv("MISTRAL_AGENT")
-print(diction_genres)
-client=Mistral(api_key=MistralKey)
 
+client=Mistral(api_key=MistralKey)
 content =f"voici les genres en pourcentages: {diction_genres} , {weather}"
 response =client.agents.complete(
     agent_id=MistralAgent,

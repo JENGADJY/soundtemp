@@ -30,4 +30,4 @@ else:
 weather.append(ville)
 weather.append(temperature)
 weather.append(description)
-print(weather)
+#print(weather)

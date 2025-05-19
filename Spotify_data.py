@@ -81,10 +81,10 @@ print(" Récupération des artistes préférés...")
 top = get_users_top_items(access_token)
 genres = []
 
-for idx, artist in enumerate(top["items"], 1):
-    if artist['genres']:
-        genres.extend(artist['genres'])
-    print(f"{idx}. {artist['name']} (Genres: {', '.join(artist['genres'])})")
+#for idx, artist in enumerate(top["items"], 1):
+#    if artist['genres']:
+#        genres.extend(artist['genres'])
+#    print(f"{idx}. {artist['name']} (Genres: {', '.join(artist['genres'])})")
 
 diction_genres_raw = Counter(genres)
 total_genres = sum(diction_genres_raw.values())
