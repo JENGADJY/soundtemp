@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mon Profil</title>
+</head>
+<body>
+    <h2>Modifier le profil</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: green;">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <label>Nom d'utilisateur :</label><br>
+        <input type="text" name="username" value="{{ user.username }}" required><br><br>
+
+        <label>Email :</label><br>
+        <input type="email" name="email" value="{{ user.email }}"><br><br>
+
+        <button type="submit">Mettre à jour</button>
+    </form>
+</body>
+</html>
