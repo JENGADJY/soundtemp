@@ -22,5 +22,10 @@
 
         <button type="submit">Mettre à jour</button>
     </form>
+
+    <form method="POST" action="{% url 'ma_fonction' %}">
+        {% csrf_token %}
+        <button type="submit">Exécuter la fonction Python</button>
+    </form>
 </body>
 </html>

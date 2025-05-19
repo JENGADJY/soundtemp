@@ -2,6 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from .script.client_mistral import reco
+from .script.Spotify_data import diction_genres
+from .script.weather_data import weather
+
+
 
 def register(request):
     if request.method == 'POST':
@@ -51,3 +58,9 @@ def edit_profile(request):
         return redirect('profile')  
 
     return render(request, 'profile.html', {'user': request.user})
+
+@login_required
+def ma_fonction(request):
+    if request.method == 'POST':
+        return HttpResponse(f"Fonction exécutée avec succès.{reco(diction_genres,weather)},Fonction exécutée")
+    return HttpResponse("Méthode non autorisée.", status=405)

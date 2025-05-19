@@ -9,10 +9,9 @@
     {% if request.user.is_authenticated %}
         <p>Bonjour, {{ request.user.username }} !</p>
         <p>Email : {{ request.user.email }}</p>
-        <!-- Tu peux ajouter d'autres infos utilisateur ici -->
     {% else %}
         <p>Vous n’êtes pas connecté.</p>
-        <a href="{% url 'login' %}">Se connecter</a> <!-- adapte le nom de l'URL -->
+        <a href="{% url 'login' %}">Se connecter</a>
     {% endif %}
     
 </body>
