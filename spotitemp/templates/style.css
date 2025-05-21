@@ -1,0 +1,75 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #a8edea, #fed6e3); /* ciel clair */
+  color: #333;
+}
+
+header {
+  background: #1db954; /* vert Spotify */
+  color: #fff;
+  padding: 1em;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+  margin: 0 1em;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #c4f4d3;
+}
+
+main {
+  padding: 2em;
+  background-color: #ffffffcc;
+  margin: 2em auto;
+  width: 90%;
+  max-width: 800px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+  color: #1e90ff; /* bleu météo */
+}
+
+input, button {
+  display: block;
+  margin: 1em auto;
+  padding: 0.8em;
+  width: 80%;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
+}
+
+button {
+  background-color: #1db954;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #169f45;
+}
+
+footer {
+  background: #1db954;
+  color: #fff;
+  text-align: center;
+  padding: 1em;
+  margin-top: 2em;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}

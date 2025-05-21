@@ -1,26 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Connexion</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion - SoundTemp</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h2>Connexion</h2>
-    
-    {% if messages %}
-        {% for message in messages %}
-            <p style="color:red;">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-    
-    <form method="post">
-        {% csrf_token %}
-        <label for="username">Nom d'utilisateur :</label><br>
-        <input type="text" name="username" required><br>
-
-        <label for="password">Mot de passe :</label><br>
-        <input type="password" name="password" required><br>
-
+  <header>
+    <h1>SoundTemp</h1>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="register.html">Inscription</a>
+      <a href="login.html">Connexion</a>
+      <a href="profile.html">Profil</a>
+      <a href="dashboard.html">Tableau de bord</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h2>Connexion</h2>
+      <form>
+        <input type="email" placeholder="Email" required /><br />
+        <input type="password" placeholder="Mot de passe" required /><br />
         <button type="submit">Se connecter</button>
-    </form>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 SoundTemp</p>
+  </footer>
 </body>
 </html>
