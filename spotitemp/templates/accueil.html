@@ -7,12 +7,10 @@
     <h1>Bienvenue sur Spotitemp !</h1>
     
     {% if request.user.is_authenticated %}
-        <p>Bonjour, {{ request.user.username }} !</p>
-        <p>Email : {{ request.user.email }}</p>
-        <button>Connecte-toi a ton compte spotify </button> <!---mettre le lui pour ce co-->
+        <p>Bonjour, {{ request.user.username }} !</p><!---penser a faire un boutton qui renvoie ver s une autre page-->
     {% else %}
         <p>Vous n’êtes pas connecté.</p>
-        <a href="{% url 'login' %}">Se connecter</a>
+        <a href="{% url 'login' %}">Se connecter</a><!---mettre le lui pour ce co-->
     {% endif %}
     
 </body>

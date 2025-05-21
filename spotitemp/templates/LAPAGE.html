@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>LAPAGE</title>
+</head>
+<body>
+    <h1>Quel album aujourd'hui?</h1>
+
+    
+
+    <form method="post" action="{% url 'lancer_recommendation' %}">
+        {% csrf_token %}
+        <button type="submit">Lancer la recommandation musicale</button>
+    </form>
+
+    {% if recommendation %}
+        <h2>Recommandation générée :</h2>
+        <p>{{ recommendation }}</p>
+        {% endif %}
+
+
+</body>
+</html>

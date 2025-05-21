@@ -15,16 +15,16 @@
     <form method="POST">
         {% csrf_token %}
         <label>Nom d'utilisateur :</label><br>
-        <input type="text" name="username" value="{{ user.username }}" required><br><br>
+        <input type="text" name="username" value="{{ user.username }}"><br><br>
 
         <label>Email :</label><br>
         <input type="email" name="email" value="{{ user.email }}"><br><br>
 
         <label>Access Token :</label><br>
-        <input type="text" name="access_token" style="width: 100%;" required><br><br>
+        <input type="text" name="access_token" value="{{ user.userprofile.access_token }}"><br><br>
 
         <label>Refresh Token :</label><br>
-        <input type="text" name="refresh_token" style="width: 100%;" required><br><br>
+        <input type="text" name="refresh_token" value="{{ user.userprofile.refresh_token }}"><br><br>
 
         <label>Expire dans (secondes) :</label><br>
         <input type="number" name="expires_in" value="3600"><br><br>
@@ -32,22 +32,25 @@
         <button type="submit">Mettre à jour</button>
     </form>
 
-    <form method="POST" action="{% url 'ma_fonction' %}">
-        {% csrf_token %}
-        <button type="submit">Exécuter la fonction Python</button>
-    </form>
+
 
     <hr>
 
     <div id="spotify-section">
-        <h2>Compte Spotify</h2>
-        <div id="spotify-info">
-            <p>Chargement des informations Spotify...</p>
-        </div>
-
-        <button id="spotify-link-btn" style="display:none;">Lier un compte Spotify</button>
-        <button id="spotify-unlink-btn" style="display:none;">Dissocier le compte Spotify</button>
+        {% if user.userprofile.spotify_access_token %}
+            <p><strong>Spotify lié</strong></p>
+            <p>Access token : {{ user.userprofile.access_token }}</p>
+            <p>Expire le : {{ user.userprofile.token_expires_at }}</p>
+        {% else %}
+            <a href="{% url 'spotify_login' %}">Lier mon compte Spotify</a>
+        {% endif %}
     </div>
+
+    <form method="get" action="{% url 'spotify_refresh' %}">
+        <button type="submit">Actualiser depuis Spotify</button>
+    </form>
+
+    
 
 </body>
 </html>
