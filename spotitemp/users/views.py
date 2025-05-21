@@ -136,17 +136,17 @@ def spotify_callback(request):
     refresh_token = token_info.get('refresh_token')
     expires_in = token_info.get('expires_in')
 
-    # Récupérer l’utilisateur connecté Django
+
     user = request.user
 
-    # Mettre à jour ou créer UserProfile lié
+
     profile, _ = UserProfile.objects.get_or_create(user=user)
     profile.access_token = access_token
     profile.refresh_token = refresh_token
     profile.expires_at = timezone.now() + timedelta(seconds=expires_in)  # expiration calculée
     profile.save()
 
-    # Rediriger vers la page profil ou autre
+
     return redirect('/profile/')
 
 
