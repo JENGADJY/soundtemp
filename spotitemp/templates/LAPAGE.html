@@ -1,24 +1,30 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>LAPAGE</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
-    <h1>Quel album aujourd'hui?</h1>
+    <header>
+        <h1>Quel album aujourd'hui?</h1>
+    </header>
 
-    
+    <main>
+        <form method="post" action="{% url 'lancer_recommendation' %}">
+            {% csrf_token %}
+            <button type="submit">Lancer la recommandation musicale</button>
+        </form>
 
-    <form method="post" action="{% url 'lancer_recommendation' %}">
-        {% csrf_token %}
-        <button type="submit">Lancer la recommandation musicale</button>
-    </form>
-
-    {% if recommendation %}
-        <h2>Recommandation générée :</h2>
-        <p>{{ recommendation }}</p>
+        {% if recommendation %}
+            <h2>Recommandation générée :</h2>
+            <p>{{ recommendation }}</p>
         {% endif %}
+    </main>
 
-
+    <footer>
+        &copy; 2025 - Ma Reco Musicale
+    </footer>
 </body>
 </html>
