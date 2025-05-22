@@ -90,12 +90,6 @@ L’agent **Mistral** sera intégré pour proposer une expérience intelligente 
 
 ---
 
-## 📄 Licence
-
-Projet réalisé à des fins pédagogiques. Tous droits réservés © JENGADJY
-
----
-
 ## 🤝 Contribuer
 
 Les contributions sont les bienvenues !  
