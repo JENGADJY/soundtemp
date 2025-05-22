@@ -7,25 +7,49 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>SoundTemp</h1>
-    <nav>
-      <a href="http://127.0.0.1:8000/accueil/">Accueil</a>
-      <a href="http://127.0.0.1:8000/register/">Inscription</a>
-      <a href="http://127.0.0.1:8000/login/">Connexion</a>
-      <a href="http://127.0.0.1:8000/dashboard/">Tableau de bord</a>
-    </nav>
-  </header>
-  <main>
-    <section>
-      <h2>Profil utilisateur</h2>
-      <p>Nom d'utilisateur : JohnDoe</p>
-      <p>Email : johndoe@email.com</p>
-      <p>Préférences musicales : Chill, Pop</p>
-    </section>
-  </main>
-  <footer>
-    <p>&copy; 2025 SoundTemp</p>
-  </footer>
+    <h2>Modifier le profil</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: green;">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <label>Nom d'utilisateur :</label><br>
+        <input type="text" name="username" value="{{ user.username }}"><br><br>
+
+        <label>Email :</label><br>
+        <input type="email" name="email" value="{{ user.email }}"><br><br>
+
+        <label>Access Token :</label><br>
+        <input type="text" name="access_token" value="{{ user.userprofile.access_token }}"><br><br>
+
+        <label>Refresh Token :</label><br>
+        <input type="text" name="refresh_token" value="{{ user.userprofile.refresh_token }}"><br><br>
+
+        <label>Expire dans (secondes) :</label><br>
+        <input type="number" name="expires_in" value="3600"><br><br>
+
+        <button type="submit">Mettre à jour</button>
+    </form>
+
+
+
+    <hr>
+
+    <div id="spotify-section">
+        {% if user.userprofile.spotify_access_token %}
+            <p><strong>Spotify lié</strong></p>
+            <p>Access token : {{ user.userprofile.access_token }}</p>
+            <p>Expire le : {{ user.userprofile.token_expires_at }}</p>
+        {% else %}
+            <a href="{% url 'spotify_login' %}">Lier mon compte Spotify</a>
+        {% endif %}
+    </div>
+
+    
+
 </body>
 </html>
