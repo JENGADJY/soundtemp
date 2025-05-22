@@ -17,12 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from . import views
 
 
 urlpatterns = [
+    path('', lambda request: redirect('accueil/')),
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
-    path('accueil/',views.accueil,name='accueil'),
-    
+    path('accueil/',views.accueil,name='accueil')
 ]
