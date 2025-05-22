@@ -51,11 +51,7 @@ MISTRAL_KEY=
 MISTRAL_AGENT=
 
 REDIRECT_URI=http://127.0.0.1:8000/spotify/callback/
-```
 
-> 🔒 **Attention** : Ne publiez jamais ce fichier sur GitHub. Utilisez un fichier `.env.example` sans valeurs pour le versionner.
-
----
 
 ## ▶️ Démarrage
 
