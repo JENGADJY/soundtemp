@@ -22,23 +22,7 @@ git clone https://github.com/JENGADJY/soundtemp.git
 cd soundtemp
 ```
 
-### 2. Installer les dépendances
-
-#### Backend
-
-```bash
-cd backend
-npm install
-```
-
-#### Frontend
-
-```bash
-cd ../frontend
-npm install
-```
-
-### 3. Ajouter le fichier `.env`
+### 2. Ajouter le fichier `.env`
 
 Créez un fichier `.env` à la racine du projet avec le contenu suivant :
 
@@ -51,22 +35,15 @@ MISTRAL_KEY=
 MISTRAL_AGENT=
 
 REDIRECT_URI=http://127.0.0.1:8000/spotify/callback/
-
+```
 
 ## ▶️ Démarrage
 
 ### Backend
 
 ```bash
-cd backend
-npm run dev
-```
-
-### Frontend
-
-```bash
-cd ../frontend
-npm start
+cd spotitemp/
+python3 manage.py runserver
 ```
 
 ---
