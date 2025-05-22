@@ -32,7 +32,9 @@ SPOTIFY_CLIENT_SECRET=
 WEATHER_API=
 
 MISTRAL_KEY=
-MISTRAL_AGENT=
+///agent ia permettant la recommandation des albums 
+MISTRAL_AGENT=ag:753184c9:20250516:spotitemps:0c659620 
+
 
 REDIRECT_URI=http://127.0.0.1:8000/spotify/callback/
 ```
